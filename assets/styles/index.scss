@@ -1,0 +1,47 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+$maincolor: #2d9b97;
+$secondary-color: #e7e7e7;
+
+html,
+body {
+  background-color: $maincolor;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  background-color: $secondary-color;
+}
+
+.dog-description {
+  display: block;
+  float: left;
+}
+
+.dog-thumb {
+  float: left;
+  margin: 5px, 5px, 5px, 5px;
+  max-height: 100%;
+
+  .img {
+    display: block;
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
+
+.dog-text-info {
+  float: right;
+
+  h1 {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.dog-stats {
+  display: block;
+  margin-left: 10%;
+}

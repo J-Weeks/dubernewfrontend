@@ -1,0 +1,18 @@
+{{#each dogs}}
+  <div class="jumbotron">
+    <div class='container'>
+      <div class='dog-description'>
+        <div class='dog-thumb'><img style='max-height: 250px; max-width: 250px' src="{{{url}}}"></div>
+        <div class='dog-text-info'>
+          <h1>{{name}}</h1><br>
+          <div class='dog-stats'>
+            Breed: {{breed}}<br>
+            Size: {{size}}<br>
+            Notes: {{note}}<br>
+            Dog Rating: {{rating}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/each}}
