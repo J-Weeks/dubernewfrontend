@@ -22,8 +22,8 @@ let getDogs = function(){
 };
 
 let displayDogs = function(dogs){
-  let dogsTemplate = require('./dogs.handlebars');
   // debugger;
+  let dogsTemplate = require('./templates/dogs.handlebars');  // debugger;
   $('.primary-content').append(dogsTemplate({
     dogs
   }));

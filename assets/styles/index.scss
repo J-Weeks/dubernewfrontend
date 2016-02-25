@@ -15,9 +15,20 @@ body {
   background-color: $secondary-color;
 }
 
+.navbar {
+  .sign {
+    margin-top: 1%;
+  }
+
+  .signin {
+    margin-right: 1%;
+  }
+}
+
 .dog-description {
   display: block;
   float: left;
+  width: 100%;
 }
 
 .dog-thumb {
@@ -27,21 +38,29 @@ body {
 
   .img {
     display: block;
-    max-width: 200px;
     max-height: 200px;
+    max-width: 200px;
   }
 }
 
 .dog-text-info {
+  clear: right;
   float: right;
 
+
   h1 {
-    width: 100%;
     margin: 0 auto;
+    width: 100%;
   }
 }
 
 .dog-stats {
   display: block;
   margin-left: 10%;
+}
+
+.dog-actions {
+  clear: both;
+  float: right;
+  margin-top: 5%;
 }
