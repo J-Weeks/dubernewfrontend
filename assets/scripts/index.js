@@ -9,10 +9,21 @@ require('./example');
 $(document).ready(function(){
   setupClicks();
   getDogs();
+  checkUser();
 });
 
-let setupClicks = function(){
+let checkUser = function(){
+  let userinfo = localStorage.getItem('User');
+  userinfo = JSON.parse(userinfo);
+  if(userinfo !== null){
+    debugger;
+    $('#signInModalLabel').text('Back Again! Please Sign In.')
+    $('.sign').toggleClass('hide');
+  }
+}
 
+let setupClicks = function(){
+// modals
   $('.signup').on('click', function(e){
     e.preventDefault();
     $('#signUpModal').modal('show');
@@ -22,8 +33,73 @@ let setupClicks = function(){
     e.preventDefault();
     $('#signInModal').modal('show');
   });
+
+  $('.signout').on('click', function(e){
+    e.preventDefault();
+    let userinfo = localStorage.getItem('User');
+    userinfo = JSON.parse(userinfo);
+    userSignOut(userinfo);
+  });
+
+  $('.sign-in').on('submit', function(e){
+    e.preventDefault();
+    var formData = new FormData(e.target);
+    userSignIn(formData);
+  });
+  // end modals
+
+//sign up
+  $('.sign-up').on('submit', function(e){
+    e.preventDefault();
+    var formData = new FormData(e.target);
+
+    $.ajax({
+      url: "http://localhost:3000/sign-up",
+      method: 'POST',
+      contentType: false,
+      processData: false,
+      data: formData,
+    }).done(function(data){
+      userSignIn(formData);
+    }).fail(function(data){
+      console.log(data);
+    });
+  });
 };
 
+let userSignIn = function(formData){
+  $.ajax({
+    url: "http://localhost:3000/sign-in",
+    method: 'POST',
+    contentType: false,
+    processData: false,
+    data: formData,
+  }).done(function(userData){
+    $('.sign').toggleClass('hide');
+    localStorage.setItem('User', JSON.stringify(userData));
+    debugger;
+  }).fail(function(userData){
+    debugger;
+    console.log(userData);
+  });
+};
+
+let userSignOut = function(userinfo){
+  $.ajax({
+    url: "http://localhost:3000/sign-out/" + userinfo.id,
+    headers: {
+            Authorization: 'Token token=' + userinfo.token,
+          },
+          method: 'DELETE',
+          contentType: false,
+          processData: false,
+  }).done(function(){
+    $('.sign').toggleClass('hide');
+    localStorage.removeItem('User');
+  }).fail(function(){
+    console.log('signout failed');
+  });
+};
 
 let getDogs = function(){
   $.ajax({
