@@ -7,8 +7,22 @@
 require('./example');
 
 $(document).ready(function(){
+  setupClicks();
   getDogs();
 });
+
+let setupClicks = function(){
+
+  $('.signup').on('click', function(e){
+    e.preventDefault();
+    $('#signUpModal').modal('show');
+  });
+
+  $('.signin').on('click', function(e){
+    e.preventDefault();
+    $('#signInModal').modal('show');
+  });
+};
 
 
 let getDogs = function(){
