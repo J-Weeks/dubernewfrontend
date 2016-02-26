@@ -8,7 +8,6 @@ require('./example');
 
 $(document).ready(function(){
   setupClicks();
-  getDogs();
   checkUser();
 });
 
@@ -77,7 +76,8 @@ let userSignIn = function(formData){
   }).done(function(userData){
     $('.sign').toggleClass('hide');
     localStorage.setItem('User', JSON.stringify(userData));
-    debugger;
+    $('.splash').hide();
+    getDogs(userData);
   }).fail(function(userData){
     debugger;
     console.log(userData);
@@ -96,18 +96,24 @@ let userSignOut = function(userinfo){
   }).done(function(){
     $('.sign').toggleClass('hide');
     localStorage.removeItem('User');
+    location.reload();
   }).fail(function(){
     console.log('signout failed');
   });
 };
 
-let getDogs = function(){
+let getDogs = function(userData){
   $.ajax({
-    url: "http://localhost:3000/dogs",
+    // url: "http://localhost:3000/dogs",
+    url: "http://localhost:3000/users/" + userData.id,
+    headers: {
+            Authorization: 'Token token=' + userData.token,
+          },
     method: 'GET',
     dataType: 'json'
   }).done(function(dogs){
-    displayDogs(dogs);
+    debugger;
+    displayDogs(dogs.dogs);
   });
 };
 
