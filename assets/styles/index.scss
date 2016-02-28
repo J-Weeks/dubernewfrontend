@@ -1,8 +1,11 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import url(https://fonts.googleapis.com/css?family=Short+Stack|Laila);
 
-$maincolor: #2d9b97;
-$secondary-color: #e7e7e7;
+$maincolor: #467386;
+$secondary-color: #6e92a1;
+$main-font: 'Short Stack', cursive;
+$second-font:'Laila', serif;
 
 html,
 body {
@@ -63,4 +66,12 @@ body {
   clear: both;
   float: right;
   margin-top: 5%;
+}
+
+.wag-brand {
+  font-family: $main-font;
+}
+
+.wag-brand-off {
+  font-family: $second-font;
 }

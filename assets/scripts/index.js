@@ -8,7 +8,7 @@ require('./example');
 
 $(document).ready(function(){
   setupClicks();
-  checkUser();
+  // checkUser();
 });
 
 let checkUser = function(){
@@ -44,6 +44,11 @@ let setupClicks = function(){
     e.preventDefault();
     var formData = new FormData(e.target);
     userSignIn(formData);
+  });
+
+  $('.editInfo').on('click', function(e){
+    e.preventDefault();
+    $('#edit-info-modal').modal('show');
   });
   // end modals
 
