@@ -50,12 +50,18 @@ let setupClicks = function(){
     e.preventDefault();
     $('#edit-info-modal').modal('show');
   });
+
+  $('.edit-Info').on('submit', function(e){
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    userUpdate(formData);
+  });
   // end modals
 
 //sign up
   $('.sign-up').on('submit', function(e){
     e.preventDefault();
-    var formData = new FormData(e.target);
+    let formData = new FormData(e.target);
 
     $.ajax({
       url: "http://localhost:3000/sign-up",
@@ -82,12 +88,37 @@ let userSignIn = function(formData){
     $('.sign').toggleClass('hide');
     localStorage.setItem('User', JSON.stringify(userData));
     $('.splash').hide();
+    $('#signInModal').modal('hide');
     getDogs(userData);
   }).fail(function(userData){
     debugger;
     console.log(userData);
   });
 };
+
+let userUpdate = function(formData){
+
+  let userinfo = localStorage.getItem('User');
+  userinfo = JSON.parse(userinfo);
+  $.ajax({
+    // url: "https://www.googleapis.com/upload/mirror/v1/",
+    url: "http://localhost:3000/users/" + userinfo.id,
+    headers: {
+            Authorization: 'Token token=' + userinfo.token,
+          },
+    method: 'PATCH',
+    contentType: false,
+    processData: false,
+    data: formData,
+  }).done(function(userData){
+    $('edit-info-modal').modal('hide');
+    localStorage.removeItem('User');
+    localStorage.setItem('User', JSON.stringify(userData));
+    debugger;
+  }).fail(function(data){
+    console.log('user update failed');
+  })
+}
 
 let userSignOut = function(userinfo){
   $.ajax({
@@ -117,7 +148,7 @@ let getDogs = function(userData){
     method: 'GET',
     dataType: 'json'
   }).done(function(dogs){
-    debugger;
+    // debugger;
     displayDogs(dogs.dogs);
   });
 };
