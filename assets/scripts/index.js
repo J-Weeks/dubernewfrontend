@@ -137,7 +137,7 @@ let userSignOut = function(userinfo){
   });
 };
 
-let getDogs = function(userData){
+let getDogs = function(userData, usersToo){
   $.ajax({
     // url: "http://localhost:3000/dogs",
     url: "http://localhost:3000/users/" + userData.id,
@@ -147,7 +147,11 @@ let getDogs = function(userData){
     method: 'GET',
     dataType: 'json'
   }).done(function(dogs){
-    displayUsers(dogs);
+    if(usersToo){
+      displayUsers(dogs);
+    }else{
+      displayDogs(dogs.dogs);
+    }
   });
 };
 
@@ -162,9 +166,47 @@ let displayUsers = function(user){
 };
 
 let displayDogs = function(dogs){
-  // debugger;
+  $('.primary-content').html('');
   let dogsTemplate = require('./templates/dogs.handlebars');  // debugger;
+
   $('.primary-content').append(dogsTemplate({
     dogs
   }));
+  editDog();
+};
+
+let editDog = function(){
+  //add click regist once dogs templates are loaded
+    $('.edit-dog').on('click', function(e){
+      e.preventDefault();
+      let dogId = $(e.target).attr('data-id');
+      $('.update-dog').attr('data-id', dogId);
+      $('#editDogModal').modal('show');
+    });
+
+    $('#editDogModal').on('submit', function(e){
+        e.preventDefault();
+        let formData = new FormData(e.target);
+        updateDog(formData);
+    });
+};
+
+let updateDog = function(formData){
+  let dogId = $('.update-dog').attr('data-id');
+  $.ajax({
+    // url: "https://www.googleapis.com/upload/mirror/v1/",
+    url: "http://localhost:3000/dogs/" + dogId,
+    method: 'PATCH',
+    contentType: false,
+    processData: false,
+    data: formData,
+  }).done(function(data){
+    $('#editDogModal').modal('hide');
+    let userinfo = localStorage.getItem('User');
+    userinfo = JSON.parse(userinfo);
+    let usersToo = false;
+    getDogs(userinfo, usersToo);
+  }).fail(function(data){
+    console.log('update dog failed');
+  })
 };
