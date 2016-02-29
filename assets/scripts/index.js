@@ -90,10 +90,23 @@ let userSignIn = function(formData){
     $('.splash').hide();
     $('#signInModal').modal('hide');
     getDogs(userData);
+    userUpdateFill(userData);
   }).fail(function(userData){
     console.log('sign in failed')
     console.log(userData);
   });
+};
+
+let userUpdateFill = function(){
+  let userData = localStorage.getItem('User');
+  userData = JSON.parse(userData);
+  $('#inputEmail').val(userData.email);
+  $('#inputNameFirst').val(userData.first_name);
+  $('#inputNameLast').val(userData.last_name);
+  $('#inputAddress').val(userData.address);
+  $('#inputDescription').val(userData.description);
+  $('#inputUrl').val(userData.url);
+  $('#inputToken').val(userData.token);
 };
 
 let userUpdate = function(formData){
@@ -111,9 +124,9 @@ let userUpdate = function(formData){
     processData: false,
     data: formData,
   }).done(function(userData){
-    $('edit-info-modal').modal('hide');
     localStorage.removeItem('User');
     localStorage.setItem('User', JSON.stringify(userData));
+      $('#edit-info-modal').modal('hide');
   }).fail(function(data){
     console.log('user update failed');
   });
@@ -181,7 +194,17 @@ let editDog = function(){
       e.preventDefault();
       let dogId = $(e.target).attr('data-id');
       $('.update-dog').attr('data-id', dogId);
-      $('#editDogModal').modal('show');
+
+      $.ajax({
+        // url: "http://localhost:3000/dogs",
+        url: "http://localhost:3000/dogs/" + dogId,
+        method: 'GET',
+        dataType: 'json'
+      }).done(function(dog){
+        fillEditDog(dog);
+      }).fail(function(dog){
+        console.log('editDog GET failed');
+      });
     });
 
     $('#editDogModal').on('submit', function(e){
@@ -189,6 +212,17 @@ let editDog = function(){
         let formData = new FormData(e.target);
         updateDog(formData);
     });
+};
+
+let fillEditDog = function(dog){
+  $('#inputname').val(dog.name);
+  $('#inputbreed').val(dog.breed);
+  $('#inputdescription').val(dog.description);
+  $('#inputsize').val(dog.size);
+  $('#inputnote').val(dog.note);
+  $('#inputurl').val(dog.url);
+
+  $('#editDogModal').modal('show');
 };
 
 let updateDog = function(formData){
