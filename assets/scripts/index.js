@@ -91,7 +91,7 @@ let userSignIn = function(formData){
     $('#signInModal').modal('hide');
     getDogs(userData);
   }).fail(function(userData){
-    debugger;
+    console.log('sign in failed')
     console.log(userData);
   });
 };
@@ -114,11 +114,10 @@ let userUpdate = function(formData){
     $('edit-info-modal').modal('hide');
     localStorage.removeItem('User');
     localStorage.setItem('User', JSON.stringify(userData));
-    debugger;
   }).fail(function(data){
     console.log('user update failed');
-  })
-}
+  });
+};
 
 let userSignOut = function(userinfo){
   $.ajax({
@@ -148,9 +147,18 @@ let getDogs = function(userData){
     method: 'GET',
     dataType: 'json'
   }).done(function(dogs){
-    // debugger;
-    displayDogs(dogs.dogs);
+    displayUsers(dogs);
   });
+};
+
+let displayUsers = function(user){
+  $('.navbar').first().addClass('primary-nav');
+  let userNavTemplate = require('./templates/usernav.handlebars');
+  //  debugger;
+  $('.primary-nav').after(userNavTemplate({
+    user
+  }));
+  displayDogs(user.dogs);
 };
 
 let displayDogs = function(dogs){
